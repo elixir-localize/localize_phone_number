@@ -20,7 +20,7 @@ erl_crash.dump
 *.ez
 
 # Ignore package tarball (built via "mix hex.build").
-localize_phonenumber-*.tar
+localize_phone_number-*.tar
 
 # NIF build artifacts
 c_src/env.mk

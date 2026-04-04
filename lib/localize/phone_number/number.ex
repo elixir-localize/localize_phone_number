@@ -1,4 +1,4 @@
-defmodule LocalizePhonenumber.Phonenumber do
+defmodule Localize.PhoneNumber.Number do
   @moduledoc """
   Represents a parsed phone number.
 

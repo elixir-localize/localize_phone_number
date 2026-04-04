@@ -1,4 +1,4 @@
-defmodule LocalizePhonenumber.Territory do
+defmodule Localize.PhoneNumber.Territory do
   @moduledoc false
 
   @default_territory "US"

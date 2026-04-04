@@ -1,4 +1,4 @@
-defmodule LocalizePhonenumber.Nif do
+defmodule Localize.PhoneNumber.Nif do
   @moduledoc """
   NIF interface to Google's libphonenumber C++ library.
 
@@ -15,7 +15,7 @@ defmodule LocalizePhonenumber.Nif do
 
   @doc false
   def init do
-    path = :code.priv_dir(:localize_phonenumber) ++ ~c"/localize_phonenumber_nif"
+    path = :code.priv_dir(:localize_phone_number) ++ ~c"/localize_phone_number_nif"
     :erlang.load_nif(path, 0)
   end
 
@@ -30,7 +30,7 @@ defmodule LocalizePhonenumber.Nif do
 
   ### Examples
 
-      iex> is_boolean(LocalizePhonenumber.Nif.available?())
+      iex> is_boolean(Localize.PhoneNumber.Nif.available?())
       true
 
   """

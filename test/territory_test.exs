@@ -1,7 +1,7 @@
-defmodule LocalizePhonenumber.TerritoryTest do
+defmodule Localize.PhoneNumber.TerritoryTest do
   use ExUnit.Case
 
-  alias LocalizePhonenumber.Territory
+  alias Localize.PhoneNumber.Territory
 
   describe "resolve/1" do
     test "validates explicit territory string via Localize" do
@@ -33,7 +33,6 @@ defmodule LocalizePhonenumber.TerritoryTest do
     end
 
     test "resolves territory for language-only locale via Localize" do
-      # Localize infers territory from language via likely subtags
       result = Territory.resolve(locale: "en")
       assert is_binary(result)
       assert byte_size(result) == 2 or result == "US"

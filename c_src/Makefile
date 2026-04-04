@@ -5,9 +5,9 @@ PRIVDIR=./priv
 NIF_DIR=c_src
 NIF_ENV=c_src/env.mk
 
-NIF_SOURCES=$(NIF_DIR)/localize_phonenumber_nif.cpp
-NIF_OBJS=$(NIF_DIR)/localize_phonenumber_nif.o
-NIF_SO=$(PRIVDIR)/localize_phonenumber_nif.so
+NIF_SOURCES=$(NIF_DIR)/localize_phone_number_nif.cpp
+NIF_OBJS=$(NIF_DIR)/localize_phone_number_nif.o
+NIF_SO=$(PRIVDIR)/localize_phone_number_nif.so
 
 UNAME_SYS := $(shell uname -s)
 UNAME_ARCH := $(shell uname -p)

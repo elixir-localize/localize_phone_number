@@ -1,11 +1,11 @@
-defmodule LocalizePhonenumber.MixProject do
+defmodule Localize.PhoneNumber.MixProject do
   use Mix.Project
 
   @version "0.1.0"
 
   def project do
     [
-      app: :localize_phonenumber,
+      app: :localize_phone_number,
       version: @version,
       elixir: "~> 1.19",
       start_permanent: Mix.env() == :prod,

@@ -1,4 +1,4 @@
-// localize_phonenumber_nif.cpp
+// localize_phone_number_nif.cpp
 //
 // Erlang NIF bindings to Google's libphonenumber C++ library.
 // Provides phone number parsing, formatting, validation, type
@@ -311,5 +311,5 @@ static ErlNifFunc nif_funcs[] = {
     {"nif_territory",            1, nif_territory}
 };
 
-ERL_NIF_INIT(Elixir.LocalizePhonenumber.Nif, nif_funcs, &on_load,
+ERL_NIF_INIT(Elixir.Localize.PhoneNumber.Nif, nif_funcs, &on_load,
              nullptr, &on_upgrade, &on_unload)

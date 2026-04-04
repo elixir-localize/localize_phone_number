@@ -1,4 +1,4 @@
-defmodule LocalizePhonenumber do
+defmodule Localize.PhoneNumber do
   @moduledoc """
   Elixir interface to Google's libphonenumber library via NIF.
 
@@ -6,16 +6,16 @@ defmodule LocalizePhonenumber do
   locale-aware territory defaults. The default territory is derived
   from `Localize.get_locale/0` using the `localize` dependency.
 
-  All functions operate on `LocalizePhonenumber.Phonenumber` structs
+  All functions operate on `Localize.PhoneNumber.Number` structs
   returned by `parse/2`.
 
   """
 
-  alias LocalizePhonenumber.Nif
-  alias LocalizePhonenumber.Phonenumber
-  alias LocalizePhonenumber.Territory
+  alias Localize.PhoneNumber.Nif
+  alias Localize.PhoneNumber.Number
+  alias Localize.PhoneNumber.Territory
 
-  @type t :: Phonenumber.t()
+  @type t :: Number.t()
 
   @type format_type :: :e164 | :international | :national | :rfc3966
 
@@ -51,7 +51,7 @@ defmodule LocalizePhonenumber do
 
   ### Examples
 
-      iex> is_boolean(LocalizePhonenumber.available?())
+      iex> is_boolean(Localize.PhoneNumber.available?())
       true
 
   """
@@ -59,7 +59,7 @@ defmodule LocalizePhonenumber do
   defdelegate available?(), to: Nif
 
   @doc """
-  Parses a phone number string into a `LocalizePhonenumber.Phonenumber` struct.
+  Parses a phone number string into a `Localize.PhoneNumber.Number` struct.
 
   ### Arguments
 
@@ -83,17 +83,17 @@ defmodule LocalizePhonenumber do
   ### Returns
 
   * `{:ok, phone_number}` where `phone_number` is a
-    `LocalizePhonenumber.Phonenumber` struct.
+    `Localize.PhoneNumber.Number` struct.
 
   * `{:error, reason}` if the number cannot be parsed.
 
   ### Examples
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
       iex> phone_number.country_code
       1
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("020 7946 0958", territory: "GB")
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("020 7946 0958", territory: "GB")
       iex> phone_number.country_code
       44
 
@@ -104,7 +104,7 @@ defmodule LocalizePhonenumber do
 
     case Nif.parse(number_string, default_territory) do
       {:ok, country_code, national_number, extension, raw_input, native_binary} ->
-        phone_number = %Phonenumber{
+        phone_number = %Number{
           country_code: country_code,
           national_number: national_number,
           extension: if(extension == "", do: nil, else: extension),
@@ -124,7 +124,7 @@ defmodule LocalizePhonenumber do
 
   ### Arguments
 
-  * `phone_number` is a `LocalizePhonenumber.Phonenumber` struct
+  * `phone_number` is a `Localize.PhoneNumber.Number` struct
     returned by `parse/2`.
 
   * `format_type` is one of `:e164`, `:international`, `:national`,
@@ -138,17 +138,17 @@ defmodule LocalizePhonenumber do
 
   ### Examples
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
-      iex> LocalizePhonenumber.format(phone_number, :e164)
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.format(phone_number, :e164)
       {:ok, "+16502530000"}
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
-      iex> LocalizePhonenumber.format(phone_number, :international)
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.format(phone_number, :international)
       {:ok, "+1 650-253-0000"}
 
   """
   @spec format(t(), format_type()) :: {:ok, String.t()} | {:error, String.t()}
-  def format(%Phonenumber{__native__: native_binary}, format_type)
+  def format(%Number{__native__: native_binary}, format_type)
       when is_atom(format_type) do
     format_string = Map.fetch!(@format_types, format_type)
     Nif.format(native_binary, format_string)
@@ -162,7 +162,7 @@ defmodule LocalizePhonenumber do
 
   ### Arguments
 
-  * `phone_number` is a `LocalizePhonenumber.Phonenumber` struct.
+  * `phone_number` is a `Localize.PhoneNumber.Number` struct.
 
   ### Returns
 
@@ -172,13 +172,13 @@ defmodule LocalizePhonenumber do
 
   ### Examples
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
-      iex> LocalizePhonenumber.valid?(phone_number)
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.valid?(phone_number)
       true
 
   """
   @spec valid?(t()) :: boolean()
-  def valid?(%Phonenumber{__native__: native_binary}) do
+  def valid?(%Number{__native__: native_binary}) do
     Nif.valid?(native_binary)
   end
 
@@ -187,7 +187,7 @@ defmodule LocalizePhonenumber do
 
   ### Arguments
 
-  * `phone_number` is a `LocalizePhonenumber.Phonenumber` struct.
+  * `phone_number` is a `Localize.PhoneNumber.Number` struct.
 
   * `territory` is an ISO 3166-1 alpha-2 territory code string
     (e.g., `"US"`, `"GB"`).
@@ -200,13 +200,13 @@ defmodule LocalizePhonenumber do
 
   ### Examples
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
-      iex> LocalizePhonenumber.valid_for_territory?(phone_number, "US")
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.valid_for_territory?(phone_number, "US")
       true
 
   """
   @spec valid_for_territory?(t(), String.t()) :: boolean()
-  def valid_for_territory?(%Phonenumber{__native__: native_binary}, territory)
+  def valid_for_territory?(%Number{__native__: native_binary}, territory)
       when is_binary(territory) do
     Nif.valid_for_territory?(native_binary, String.upcase(territory))
   end
@@ -219,7 +219,7 @@ defmodule LocalizePhonenumber do
 
   ### Arguments
 
-  * `phone_number` is a `LocalizePhonenumber.Phonenumber` struct.
+  * `phone_number` is a `Localize.PhoneNumber.Number` struct.
 
   ### Returns
 
@@ -229,13 +229,13 @@ defmodule LocalizePhonenumber do
 
   ### Examples
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
-      iex> LocalizePhonenumber.possible?(phone_number)
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.possible?(phone_number)
       true
 
   """
   @spec possible?(t()) :: boolean()
-  def possible?(%Phonenumber{__native__: native_binary}) do
+  def possible?(%Number{__native__: native_binary}) do
     Nif.possible?(native_binary)
   end
 
@@ -244,7 +244,7 @@ defmodule LocalizePhonenumber do
 
   ### Arguments
 
-  * `phone_number` is a `LocalizePhonenumber.Phonenumber` struct.
+  * `phone_number` is a `Localize.PhoneNumber.Number` struct.
 
   ### Returns
 
@@ -255,13 +255,13 @@ defmodule LocalizePhonenumber do
 
   ### Examples
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
-      iex> LocalizePhonenumber.type(phone_number)
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.type(phone_number)
       :fixed_line_or_mobile
 
   """
   @spec type(t()) :: phone_number_type()
-  def type(%Phonenumber{__native__: native_binary}) do
+  def type(%Number{__native__: native_binary}) do
     native_binary
     |> Nif.type()
     |> String.to_existing_atom()
@@ -272,7 +272,7 @@ defmodule LocalizePhonenumber do
 
   ### Arguments
 
-  * `phone_number` is a `LocalizePhonenumber.Phonenumber` struct.
+  * `phone_number` is a `Localize.PhoneNumber.Number` struct.
 
   ### Returns
 
@@ -283,13 +283,13 @@ defmodule LocalizePhonenumber do
 
   ### Examples
 
-      iex> {:ok, phone_number} = LocalizePhonenumber.parse("+1 650-253-0000")
-      iex> LocalizePhonenumber.territory(phone_number)
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.territory(phone_number)
       "US"
 
   """
   @spec territory(t()) :: String.t() | nil
-  def territory(%Phonenumber{__native__: native_binary}) do
+  def territory(%Number{__native__: native_binary}) do
     case Nif.territory(native_binary) do
       "" -> nil
       territory -> territory
