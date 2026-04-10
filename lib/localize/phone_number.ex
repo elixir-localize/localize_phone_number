@@ -119,8 +119,10 @@ defmodule Localize.PhoneNumber do
     end
   end
 
+  import Kernel, except: [to_string: 1]
+
   @doc """
-  Formats a parsed phone number in the specified format.
+  Formats a parsed phone number as a string in the specified format.
 
   ### Arguments
 
@@ -128,7 +130,7 @@ defmodule Localize.PhoneNumber do
     returned by `parse/2`.
 
   * `format_type` is one of `:e164`, `:international`, `:national`,
-    or `:rfc3966`.
+    or `:rfc3966`. The default is `:international`.
 
   ### Returns
 
@@ -139,16 +141,22 @@ defmodule Localize.PhoneNumber do
   ### Examples
 
       iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
-      iex> Localize.PhoneNumber.format(phone_number, :e164)
+      iex> Localize.PhoneNumber.to_string(phone_number, :e164)
       {:ok, "+16502530000"}
 
       iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
-      iex> Localize.PhoneNumber.format(phone_number, :international)
+      iex> Localize.PhoneNumber.to_string(phone_number, :international)
+      {:ok, "+1 650-253-0000"}
+
+      iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+      iex> Localize.PhoneNumber.to_string(phone_number)
       {:ok, "+1 650-253-0000"}
 
   """
-  @spec format(t(), format_type()) :: {:ok, String.t()} | {:error, String.t()}
-  def format(%Number{__native__: native_binary}, format_type)
+  @spec to_string(t(), format_type()) :: {:ok, String.t()} | {:error, String.t()}
+  def to_string(phone_number, format_type \\ :international)
+
+  def to_string(%Number{__native__: native_binary}, format_type)
       when is_atom(format_type) do
     format_string = Map.fetch!(@format_types, format_type)
     Nif.format(native_binary, format_string)

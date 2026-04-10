@@ -71,23 +71,23 @@ defmodule Localize.PhoneNumberTest do
     end
 
     test "formats as E.164", %{phone_number: phone_number} do
-      assert {:ok, "+16502530000"} = Localize.PhoneNumber.format(phone_number, :e164)
+      assert {:ok, "+16502530000"} = Localize.PhoneNumber.to_string(phone_number, :e164)
     end
 
     test "formats as international", %{phone_number: phone_number} do
-      assert {:ok, formatted} = Localize.PhoneNumber.format(phone_number, :international)
+      assert {:ok, formatted} = Localize.PhoneNumber.to_string(phone_number, :international)
       assert formatted =~ "+"
       assert formatted =~ "650"
     end
 
     test "formats as national", %{phone_number: phone_number} do
-      assert {:ok, formatted} = Localize.PhoneNumber.format(phone_number, :national)
+      assert {:ok, formatted} = Localize.PhoneNumber.to_string(phone_number, :national)
       assert formatted =~ "650"
       refute String.starts_with?(formatted, "+")
     end
 
     test "formats as RFC 3966", %{phone_number: phone_number} do
-      assert {:ok, formatted} = Localize.PhoneNumber.format(phone_number, :rfc3966)
+      assert {:ok, formatted} = Localize.PhoneNumber.to_string(phone_number, :rfc3966)
       assert String.starts_with?(formatted, "tel:")
     end
   end

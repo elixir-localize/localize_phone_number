@@ -32,16 +32,16 @@ Format a parsed number:
 
 ```elixir
 iex> {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
-iex> Localize.PhoneNumber.format(phone_number, :e164)
+iex> Localize.PhoneNumber.to_string(phone_number, :e164)
 {:ok, "+16502530000"}
 
-iex> Localize.PhoneNumber.format(phone_number, :international)
+iex> Localize.PhoneNumber.to_string(phone_number, :international)
 {:ok, "+1 650-253-0000"}
 
-iex> Localize.PhoneNumber.format(phone_number, :national)
+iex> Localize.PhoneNumber.to_string(phone_number, :national)
 {:ok, "(650) 253-0000"}
 
-iex> Localize.PhoneNumber.format(phone_number, :rfc3966)
+iex> Localize.PhoneNumber.to_string(phone_number, :rfc3966)
 {:ok, "tel:+1-650-253-0000"}
 ```
 
@@ -75,7 +75,7 @@ iex> Localize.PhoneNumber.territory(phone_number)
 | Function | Description |
 |----------|-------------|
 | `parse/2` | Parse a phone number string into a struct. |
-| `format/2` | Format a parsed number (`:e164`, `:international`, `:national`, `:rfc3966`). |
+| `to_string/2` | Format a parsed number (`:e164`, `:international`, `:national`, `:rfc3966`). Default is `:international`. |
 | `valid?/1` | Check if a parsed number is valid. |
 | `valid_for_territory?/2` | Check if a parsed number is valid for a specific territory. |
 | `possible?/1` | Quick check if a number has a plausible length. |
@@ -134,7 +134,7 @@ The library depends on:
 The library is a thin Elixir wrapper around a C++ NIF that calls libphonenumber's `PhoneNumberUtil` singleton directly. The NIF is compiled automatically by `elixir_make` during `mix compile`.
 
 ```
-Localize.PhoneNumber              Public API (parse, format, valid?, type, territory)
+Localize.PhoneNumber              Public API (parse, to_string, valid?, type, territory)
     │
     ├── Localize.PhoneNumber.Territory   Locale-to-territory resolution via Localize
     │
@@ -158,7 +158,7 @@ Localize.PhoneNumber              Public API (parse, format, valid?, type, terri
 }
 ```
 
-The struct also carries an opaque `__native__` field containing the serialized protobuf representation of the phone number. This binary is passed back to the NIF for all subsequent operations (`format/2`, `valid?/1`, `type/1`, etc.), ensuring lossless round-trips that preserve metadata such as Italian leading zeros and preferred formatting hints. The `__native__` field is excluded from `Inspect` output.
+The struct also carries an opaque `__native__` field containing the serialized protobuf representation of the phone number. This binary is passed back to the NIF for all subsequent operations (`to_string/2`, `valid?/1`, `type/1`, etc.), ensuring lossless round-trips that preserve metadata such as Italian leading zeros and preferred formatting hints. The `__native__` field is excluded from `Inspect` output.
 
 ### Thread Safety
 
