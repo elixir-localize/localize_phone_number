@@ -1,6 +1,6 @@
 # Localize.PhoneNumber
 
-Elixir interface to Google's [libphonenumber](https://github.com/google/libphonenumber) C++ library via NIF. Provides phone number parsing, formatting, validation, type detection, and territory resolution with locale-aware defaults powered by [Localize](https://github.com/elixir-localize/localize).
+Elixir interface to Google's [libphonenumber](https://github.com/google/libphonenumber) C++ library via NIF. Provides phone number parsing, formatting, validation, type detection, and territory resolution with locale-aware defaults powered by [Localize](https://hexdocs.pm/localize).
 
 ## Usage
 
@@ -70,6 +70,8 @@ iex> Localize.PhoneNumber.territory(phone_number)
 "US"
 ```
 
+See the [Parsing and Formatting Guide](https://hexdocs.pm/localize_phone_number/parsing_and_formatting.html) for detailed usage examples.
+
 ## API Summary
 
 | Function | Description |
@@ -94,7 +96,7 @@ The `parse/2` function needs a default territory to interpret national-format nu
 
 ### System Libraries
 
-The libphonenumber C++ library and its dependencies must be installed on the build machine.
+Google's libphonenumber C++ library must be installed on the build machine. The NIF is compiled automatically by `elixir_make` during `mix compile`.
 
 **macOS (Homebrew):**
 
@@ -102,13 +104,25 @@ The libphonenumber C++ library and its dependencies must be installed on the bui
 brew install libphonenumber
 ```
 
-This installs libphonenumber along with its transitive dependencies: protobuf, abseil, boost, and ICU.
+This installs libphonenumber along with its transitive dependencies (protobuf, abseil, boost, and ICU). The Makefile detects the Homebrew prefix automatically on both Apple Silicon (`/opt/homebrew`) and Intel (`/usr/local`) Macs.
 
 **Linux (Debian/Ubuntu):**
 
 ```bash
-apt-get install libphonenumber-dev libprotobuf-dev
+sudo apt-get install libphonenumber-dev libprotobuf-dev protobuf-compiler
 ```
+
+On distributions that provide a `pkg-config` file for libphonenumber, the Makefile uses it automatically. Otherwise it falls back to standard system library paths.
+
+**Linux (Fedora/RHEL):**
+
+```bash
+sudo dnf install libphonenumber-devel protobuf-devel
+```
+
+**From source:**
+
+If your distribution does not package libphonenumber, build it from [source](https://github.com/google/libphonenumber/blob/master/cpp/README). Ensure the headers are installed to a standard include path and the shared library is on the linker search path.
 
 ### Elixir Dependencies
 
@@ -124,7 +138,7 @@ end
 
 The library depends on:
 
-* [`localize`](https://github.com/elixir-localize/localize) — locale and territory resolution.
+* [`localize`](https://hexdocs.pm/localize) — locale and territory resolution.
 * [`elixir_make`](https://hex.pm/packages/elixir_make) — compiles the C++ NIF during `mix compile`.
 
 ## Architecture
@@ -175,4 +189,4 @@ The `c_src/Makefile` follows the same pattern used by the `localize` project:
 
 ## License
 
-Apache-2.0
+[Apache-2.0](https://github.com/elixir-localize/localize_phone_number/blob/v0.1.0/LICENSE.md)

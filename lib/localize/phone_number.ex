@@ -33,6 +33,23 @@ defmodule Localize.PhoneNumber do
           | :voicemail
           | :unknown
 
+  # Ensure the phone number type atoms exist in the atom table so that
+  # String.to_existing_atom/1 in type/1 can resolve them.
+  @phone_number_types [
+    :fixed_line,
+    :mobile,
+    :fixed_line_or_mobile,
+    :toll_free,
+    :premium_rate,
+    :shared_cost,
+    :voip,
+    :personal_number,
+    :pager,
+    :uan,
+    :voicemail,
+    :unknown
+  ]
+
   @format_types %{
     e164: "e164",
     international: "international",
@@ -270,9 +287,14 @@ defmodule Localize.PhoneNumber do
   """
   @spec type(t()) :: phone_number_type()
   def type(%Number{__native__: native_binary}) do
-    native_binary
-    |> Nif.type()
-    |> String.to_existing_atom()
+    type_string = Nif.type(native_binary)
+    type_atom = String.to_existing_atom(type_string)
+
+    if type_atom in @phone_number_types do
+      type_atom
+    else
+      :unknown
+    end
   end
 
   @doc """
