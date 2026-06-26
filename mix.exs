@@ -92,6 +92,7 @@ defmodule Localize.PhoneNumber.MixProject do
     [
       {:localize, "~> 0.14"},
       {:elixir_make, "~> 0.4", runtime: false},
+      {:phoenix_html, "~> 4.0", optional: true},
       {:ex_doc, "~> 0.35", only: :release, runtime: false},
       {:dialyxir, "~> 1.4", only: :dev, runtime: false}
     ]

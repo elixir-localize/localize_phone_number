@@ -166,4 +166,16 @@ defmodule Localize.PhoneNumberTest do
       assert Localize.PhoneNumber.territory(phone_number) == "001"
     end
   end
+
+  if Code.ensure_loaded?(Phoenix.HTML.Safe) do
+    describe "Phoenix.HTML.Safe protocol" do
+      test "renders the international format" do
+        {:ok, phone_number} = Localize.PhoneNumber.parse("+1 650-253-0000")
+
+        assert phone_number
+               |> Phoenix.HTML.Safe.to_iodata()
+               |> IO.iodata_to_binary() == "+1 650-253-0000"
+      end
+    end
+  end
 end
