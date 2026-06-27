@@ -95,6 +95,14 @@ defmodule Localize.PhoneNumber.MixProject do
       {:phoenix_html, "~> 4.0", optional: true},
       {:ex_doc, "~> 0.35", only: :release, runtime: false},
       {:dialyxir, "~> 1.4", only: :dev, runtime: false}
-    ]
+    ] ++ maybe_json_polyfill()
+  end
+
+  defp maybe_json_polyfill do
+    if Code.ensure_loaded?(:json) do
+      []
+    else
+      [{:json_polyfill, "~> 0.2 or ~> 1.0"}]
+    end
   end
 end
