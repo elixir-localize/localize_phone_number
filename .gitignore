@@ -27,3 +27,4 @@ c_src/env.mk
 c_src/*.o
 /priv/*.so
 
+.DS_Store
