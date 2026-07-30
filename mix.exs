@@ -90,8 +90,10 @@ defmodule Localize.PhoneNumber.MixProject do
 
   defp deps do
     [
-      {:localize, "~> 0.14"},
+      {:localize, "~> 1.0-rc"},
       {:elixir_make, "~> 0.4", runtime: false},
+      {:ecto, "~> 3.12", optional: true},
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:phoenix_html, "~> 4.0", optional: true},
       {:ex_doc, "~> 0.35", only: :release, runtime: false},
       {:dialyxir, "~> 1.4", only: :dev, runtime: false}
