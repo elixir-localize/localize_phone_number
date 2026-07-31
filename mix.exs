@@ -1,7 +1,7 @@
 defmodule Localize.PhoneNumber.MixProject do
   use Mix.Project
 
-  @version "0.2.0"
+  @version "1.0.0"
 
   def project do
     [
@@ -90,7 +90,7 @@ defmodule Localize.PhoneNumber.MixProject do
 
   defp deps do
     [
-      {:localize, "~> 1.0-rc"},
+      {:localize, "~> 1.0"},
       {:elixir_make, "~> 0.4", runtime: false},
       {:ecto, "~> 3.12", optional: true},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},

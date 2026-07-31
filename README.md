@@ -131,7 +131,7 @@ Add `localize_phone_number` to your `mix.exs`:
 ```elixir
 def deps do
   [
-    {:localize_phone_number, "~> 0.1.0"}
+    {:localize_phone_number, "~> 1.0"}
   ]
 end
 ```
@@ -189,4 +189,4 @@ The `c_src/Makefile` follows the same pattern used by the `localize` project:
 
 ## License
 
-[Apache-2.0](https://github.com/elixir-localize/localize_phone_number/blob/v0.1.0/LICENSE.md)
+[Apache-2.0](https://github.com/elixir-localize/localize_phone_number/blob/v1.0.0/LICENSE.md)

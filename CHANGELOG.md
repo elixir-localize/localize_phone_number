@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] — 2026-07-31
+
+### Added
+
+* `Localize.PhoneNumber.Ecto.Type` stores a number as E.164 text — the one form that identifies a number unambiguously, so the column takes a unique index — and loads it back as a parsed number that formats in any style.
+
+* The Ecto type accepts a `:territory` or `:locale` field option, so a nationally formatted number such as `"020 7946 0958"` casts correctly from a form.
+
+### Changed
+
+* Requires `localize ~> 1.0-rc`. `ecto` is an optional dependency; the Ecto type compiles only when it is present.
+
 ## [0.2.0] — June 27th, 2026
 
 ### Adds
