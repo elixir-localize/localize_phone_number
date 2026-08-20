@@ -51,6 +51,7 @@ defmodule Localize.PhoneNumber.MixProject do
         "c_src/localize_phone_number_nif.cpp",
         "mix.exs",
         "README*",
+        "usage-rules.md",
         "CHANGELOG*",
         "LICENSE*"
       ]
